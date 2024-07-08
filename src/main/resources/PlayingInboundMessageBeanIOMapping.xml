@@ -1,0 +1,17 @@
+<beanio xmlns="http://www.beanio.org/2012/03">
+
+    <!-- 'format' identifies the type of stream -->
+    <stream name="inputMessageStream" format="csv">
+        <!-- 'class' binds the header record to a java.util.HashMap -->
+        <record name="inboundPlayer" class="uk.co.joshjordan.camel_springboot_examples.beans.Player">
+
+            <!-- The order needs to match the class -->
+            <field name="name" minOccurs="1" />
+            <field name="club" minOccurs="1" />
+            <field name="position" minOccurs="1" />
+            <field name="handed" minOccurs="1" />
+
+        </record>
+
+    </stream>
+</beanio>
