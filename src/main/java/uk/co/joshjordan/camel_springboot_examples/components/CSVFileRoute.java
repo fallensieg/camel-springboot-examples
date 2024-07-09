@@ -3,8 +3,6 @@ package uk.co.joshjordan.camel_springboot_examples.components;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.beanio.BeanIODataFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import uk.co.joshjordan.camel_springboot_examples.processor.InboundMessageProcessor;
 

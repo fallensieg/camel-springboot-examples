@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+
+  <persistence-unit name="camel">
+
+    <class>uk.co.joshjordan.camel_springboot_examples.beans.Player</class>
+
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost\mimir;database=Camel;trustServerCertificate=true" />
+      <property name="javax.persistence.jdbc.user" value="username" />
+      <property name="javax.persistence.jdbc.password" value="password" />
+    </properties>
+
+  </persistence-unit>
+</persistence>
