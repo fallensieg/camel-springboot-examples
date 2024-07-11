@@ -16,7 +16,7 @@ public class InboundMessageProcessor implements Processor {
         Player player = exchange.getIn().getBody(Player.class); //Get the exchanges inbound message (i.e. whats in the file) and convert it to type String
         _logger.info("This is the row values: {}", player.toString());
         exchange.getIn().setBody(new OutboundPlayer(player.getName(), returnOutboundPlayerClubAndPosition(player)));
-
+        exchange.getIn().setHeader("consumedId", player.getId());
 
     }
 

@@ -44,6 +44,7 @@ public class RestRoute extends RouteBuilder {
                 .log(LoggingLevel.INFO, "Transformed Body: ${body}")
                 .convertBodyTo(String.class)
                 .to("file:src/data/fileRoute/output?fileName=restoutput.csv&fileExist=append&appendChars=\\n");*/
+                .to("activemq:queue:q-player?exchangePattern=InOnly") //exchangePattern=InOnly means we dont expect a resposne
                 .to("jpa:"+Player.class.getName());
     }
 }
