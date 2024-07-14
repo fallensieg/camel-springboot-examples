@@ -34,10 +34,10 @@ Predicate isPositionGK = header("position").isEqualTo("GK");
        onException(JMSException.class, ConnectException.class, ExchangeTimedOutException.class)
                 .routeId("JMS Exception Handler")
                 .handled(true)
-                .log(LoggingLevel.INFO, "JMS Exception has occurred.");
+                .log(LoggingLevel.INFO, "JMS Exception has occurred while connecting to queue broker.");
 
         restConfiguration()
-                .component("jetty")
+                .component("servlet")
                 .host("0.0.0.0")
                 .port(8081)
                 .bindingMode(RestBindingMode.json)
@@ -51,32 +51,21 @@ Predicate isPositionGK = header("position").isEqualTo("GK");
                 .to("direct:processPlayer");
 
         from("direct:processPlayer")
+                .routeId("processPlayerId")
                 .log(LoggingLevel.INFO, "${body}")
                 .bean(new RestProcessingBean())
-                .choice()
-                .when(isPositionGK)
-                    .log(LoggingLevel.INFO, "GK found")
-                    .to("direct:toActiveMq")
-                .otherwise()
-                    .log(LoggingLevel.INFO, "Sending to toDb endpoint")
-                    .to("direct:toDb")
-                    .log(LoggingLevel.INFO, "Sending to toActiveMq endpoint")
-                    .to("direct:toActiveMq")
+                .to("direct:persistMessage")
+                .wireTap("seda:activeMqPublish")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
                 .transform().simple("Message has been processed. ${body}")
                 .end();
 
-
-
-
-        from("direct:toDb")
-                .routeId("toDbId")
-                .log(LoggingLevel.INFO, "Inside toDb endpoint")
+        from("direct:persistMessage")
+                .routeId("persistMessageId")
                 .to("jpa:"+Player.class.getName());
 
-        from("direct:toActiveMq")
-                .routeId("toActiveMq")
-                .log(LoggingLevel.INFO, "Inside toActiveMq endpoint")
+        from("seda:activeMqPublish")
+                .routeId("activeMqPublish")
                 .to("activemq:queue:q-player?exchangePattern=InOnly"); //exchangePattern=InOnly means we dont expect a response
     }
 }

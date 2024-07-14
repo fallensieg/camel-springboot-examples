@@ -28,4 +28,7 @@ public class Player implements Serializable {
     @Column(name = "handed")
     private String handed;
 
+    @Transient //Do not store it in the database
+    private String preferred;
+
 }
