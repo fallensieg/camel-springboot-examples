@@ -52,11 +52,6 @@ Predicate isPositionGK = header("position").isEqualTo("GK");
 
         from("direct:processPlayer")
                 .log(LoggingLevel.INFO, "${body}")
-/*                .process(new InboundMessageProcessor())
-                .log(LoggingLevel.INFO, "Transformed Body: ${body}")
-                .convertBodyTo(String.class)
-                .to("file:src/data/fileRoute/output?fileName=restoutput.csv&fileExist=append&appendChars=\\n");*/
-                //.multicast() //send to both endpoints without waiting on each other
                 .bean(new RestProcessingBean())
                 .choice()
                 .when(isPositionGK)
